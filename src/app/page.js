@@ -1,95 +1,36 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"; 
+import  { React, useEffect, useState } from 'react'
+import{ getOpciones } from './api_petition' //importacion de la funcion que hace la peticion en el archivo api_petitions.js
 
-export default function Home() {
+const page = () => {
+  //Este es un hook para guardar los datos de la peticion get con axios hacia la API
+  const [data, setData] = useState([])
+  //este hook nos ayuda a hacer la peticion de manera automatica
+  useEffect(() => {
+    //llamamos el metodo para hacer la peticion a la API
+    getOpciones(setData)
+  }, [])
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <div>
+      {
+        data.map(arreglo => //con el map llenamos las opciones
+          <ul key={arreglo.id_opcion}>
+              <li>
+                <a href={arreglo.ruta}> 
+                  {arreglo.opcion}
+                </a>
+              </li>
+          </ul> 
+        )
+      }
+    </div>
   )
 }
+
+/*nota importante, no cambies los nombres que van despues del arreglo. ya que si llegas a 
+poner arreglo.id en lugar de arreglo.id_opcion te marcara error, eso aplica para todo lo demas*/
+
+//id_opcion, opcion y ruta son los atributos que asi estan nombrados en la API por eso debe ir asi tal cual
+
+export default page
